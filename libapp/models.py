@@ -10,7 +10,8 @@ class Books(models.Model):
     author = models.CharField(max_length=200)
     category = models.CharField(max_length=200)
     description = HTMLField()
-    published_date = models.DateField
+    published_date = models.DateField(auto_now_add=False)
+    fee = models.IntegerField(default = 0)
 
 class Rating(models.Model):
     '''
@@ -22,5 +23,19 @@ class Rating(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     book_id = models.ForeignKey(Books,on_delete = models.CASCADE)
     
+class borrowing(models.Model):
+    '''
+    this is a class that defines the borrowing mechanism of a user
+    '''
+    book_id = models.ForeignKey(Books,on_delete= models.CASCADE)
+    user_id = models.ForeignKey(User,on_delete = models.CASCADE)
+    total_fee = models.IntegerField(default=0)
+    borrowed_on = models.DateTimeField(auto_now_add=True)
+    due_on = models.DateTimeField(auto_now_add=False)
+    penalty = models.IntegerField(default=0)
+    
+    
 
-# Create your models here.
+    
+    
+    
