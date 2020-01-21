@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from .forms import *
 
 # Create your views here.
 
@@ -34,3 +35,29 @@ def registration(request):
 @login_required()
 def home(request):
     return render(request,'all/home.html')
+
+@login_required()
+def borrow_view(request,book_id):
+    if request.method == 'POST':
+        book = get_object_or_404(Books,id = book_id)
+        form = borrowform(request.POST)
+        
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.book_id = id
+            item.user_id = request.user
+            item.total_fee = book.fee
+            item.penalty = 0
+            item.save()
+            return redirect('home')
+        else :
+            messages.info(request,'all fields are required')
+            return redirect('borrow',id = book.id)
+    else:
+        form = borrowform()
+        book = get_object_or_404(Books,id = book_id)
+        context = {
+            'book':book,
+            'form':form,
+        }
+        return render(request,'all/single_book.html',context)
