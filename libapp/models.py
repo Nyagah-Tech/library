@@ -34,8 +34,14 @@ class borrowing(models.Model):
     due_on = models.DateTimeField(auto_now_add=False)
     penalty = models.IntegerField(default=0)
     
-    
+class Profile(models.Model):
+    '''
+    this class gives a blueprint on how a profile is made
+    '''
+    user = models.OneToOneField(User,on_delete = models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile/')
+    bio = HTMLField()
+    update_on = models.DateTimeField(auto_now_add=True)
 
-    
     
     
