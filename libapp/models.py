@@ -2,16 +2,24 @@ from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
 class Books(models.Model):
     '''
     this is a class that defines the structure in which a book will take to be saved in a db
     '''
     name = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
-    category = models.CharField(max_length=200)
+    category = models.ForeignKey(Category,on_delete= models.CASCADE)
     description = HTMLField()
+    pic = models.ImageField(upload_to='books/',blank=True)
     published_date = models.DateField(auto_now_add=False)
     fee = models.IntegerField(default = 0)
+    
     
     
     def __str__(self):
@@ -54,5 +62,4 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
-    
     
