@@ -87,4 +87,37 @@ def category_view(request,id):
 #ADMIN DASHBOARD
 #--------------------------------------------------------------
 @login_required()
+@permission_required("True", "home")
+def registered_users(request):
+    users = User.objects.all()
+    context = {
+        'users':users,
+    }
+    return render(request,'admin_site/users.html',context)
+
+@login_required()
+@permission_required("True", "home")
+def user_deactivate(request,user_id):
+    user = User.objects.get(pk = user_id)
+    user.is_active = False
+    user.save()
+    messages.success(request,f"{user.username}'s account has been deactivated")
+    return redirect("system_users")
+
+@login_required()
 @permission_required("True","home")
+def user_activate(request,user_id):
+    user = User.objects.get(pk = user_id)
+    user.is_active = True
+    user.save()
+    messages.success(request,f"{user.username}'s account has been activated ")
+    return redirect("system_users")
+
+@login_required()
+@permission_required("True","home")
+def  dashboard(request):
+    return render(request,'admin_site/dashboard.html')
+
+#END ADMIN
+#-----------------------------------------------------
+
