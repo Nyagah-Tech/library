@@ -23,7 +23,7 @@ class Rating(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     book_id = models.ForeignKey(Books,on_delete = models.CASCADE)
     
-class borrowing(models.Model):
+class Borrowing(models.Model):
     '''
     this is a class that defines the borrowing mechanism of a user
     '''
@@ -42,6 +42,8 @@ class Profile(models.Model):
     profile_pic = models.ImageField(upload_to='profile/')
     bio = HTMLField()
     update_on = models.DateTimeField(auto_now_add=True)
+    delete_on = models.DateTimeField(auto_now_add=False,blank = True)
+    
 
     
     
