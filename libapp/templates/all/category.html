@@ -1,0 +1,22 @@
+{%extends 'all/base.html'%}
+{%load bootstrap4%}
+{%load static%}
+{%block content%}
+<body style="margin-top: 50px;">
+    
+    <div class="container">
+        <div class="row">
+            {% for book in books %}
+            <div class="col-md-4">
+                <div class="card">
+                    <p>{{book.name}}</p>
+                    {{book.pic.url}}
+                    <img src="{{book.pic.url}}" alt="" style="width: 100%;height: 100%;">
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+{% endblock %}
