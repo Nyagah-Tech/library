@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import *
+from django.contrib.auth import get_user_model, login, authenticate, logout
+
 
 # Create your views here.
 
@@ -61,3 +63,8 @@ def borrow_view(request,book_id):
             'form':form,
         }
         return render(request,'all/single_book.html',context)
+    
+@login_required()
+def logout_view(request):
+    logout(request)
+    return redirect('/')
