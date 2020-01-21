@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.contrib.auth import get_user_model, login, authenticate, logout
+from django.contrib.auth.decorators import permission_required
 
 
 # Create your views here.
@@ -36,7 +37,12 @@ def registration(request):
         return render(request,'auth/registration.html')
 @login_required()
 def home(request):
-    return render(request,'all/home.html')
+    categories = Category.objects.all()
+    context = {
+        'categories':categories,
+    }
+    
+    return render(request,'all/home.html',context)
 
 @login_required()
 def borrow_view(request,book_id):
@@ -68,3 +74,17 @@ def borrow_view(request,book_id):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+@login_required()
+def category_view(request,id):
+    books = Books.objects.filter(category = id)
+    
+    context = {
+        'books':books,
+    }
+    return render(request,'all/category.html',context)
+
+#ADMIN DASHBOARD
+#--------------------------------------------------------------
+@login_required()
+@permission_required("True","home")
