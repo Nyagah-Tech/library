@@ -19,6 +19,7 @@ class Books(models.Model):
     pic = models.ImageField(upload_to='books/',blank=True)
     published_date = models.DateField(auto_now_add=False)
     fee = models.IntegerField(default = 0)
+    quantity = models.IntegerField(default = 0)
     
     
     
@@ -44,8 +45,9 @@ class Borrowing(models.Model):
     user_id = models.ForeignKey(User,on_delete = models.CASCADE)
     total_fee = models.IntegerField(default=0)
     borrowed_on = models.DateTimeField(auto_now_add=True)
-    due_on = models.DateTimeField(auto_now_add=False)
+    no_of_days = models.IntegerField(default=1)
     penalty = models.IntegerField(default=0)
+    no_of_books = models.IntegerField(default=0)
     
     def __str__(self):
         return self.book_id

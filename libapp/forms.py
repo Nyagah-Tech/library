@@ -12,6 +12,7 @@ class BooksForm(forms.ModelForm):
             'description',
             'published_date',
             'fee',
+            'pic',
         ]
 
 class borrowform(forms.ModelForm):
@@ -23,5 +24,6 @@ class borrowform(forms.ModelForm):
             'borrowed_on',
             'penalty',
             'total_fee',
+            'no_of_books',
         }
             
