@@ -44,7 +44,7 @@
                             <td>{{ user.last_login }}</td>
                             <td>
                                 {% if user.is_active %}
-                                <a href="user/activate/{{user.id}}"
+                                <a href=user/deactivate/{{user.id}}
                                     class="btn btn-sm btn-danger">Deactivate</a>
                                 {% else %}
                                 <a href="{% url 'activate_user' user_id=user.id %}"
