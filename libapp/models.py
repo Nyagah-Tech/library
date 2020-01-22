@@ -65,3 +65,14 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
     
+class Comment(models.Model):
+    '''
+    this creates the commnets for a post
+    '''
+    comment = HTMLField()
+    posted_on = models.DateTimeField(auto_now_add=True)
+    posted_by = models.ForeignKey(User,on_delete=models.CASCADE)
+    book_id = models.ForeignKey(Books,on_delete = models.CASCADE)
+    
+    
+    

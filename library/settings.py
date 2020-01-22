@@ -40,8 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'tinymce',
-    'libapp.apps.LibappConfig'
+    'libapp.apps.LibappConfig',
+    'paypal.standard.ipn',
 ]
+
+PAYPAL_RECEIVER_EMAIL = 'pyra_m.k@yahoo.com'
+PAYPAL_TEST = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

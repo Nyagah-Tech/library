@@ -184,4 +184,6 @@ def add_book(request):
 #END ADMIN
 #-----------------------------------------------------
 
-    
+@login_required()
+def comment_view(request,book_id):
+    pass

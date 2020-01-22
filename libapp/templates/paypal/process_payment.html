@@ -1,0 +1,14 @@
+{% extends 'all/base.html' %}
+ 
+{% block title %}Make Payment{% endblock %}
+ 
+<h4>{{account_type}}</h4>
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <h4>Pay with PayPal</h4>
+        {{ form.render }}
+    </div>
+</div>
+{% endblock %}

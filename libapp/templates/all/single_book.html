@@ -1,1 +1,50 @@
-<p>single book</p>
+{%extends 'all/base.html'%}
+{%load static%}
+{%load bootstrap4%}
+{%block content%}
+
+<body style="padding: 20px;">
+  <div class="card">
+    <div class="row">
+      <div class="col-md-8">
+        <h1 class="text-center">{{book.name}}</h1>
+        <img src="{{book.pic.url}}" alt="{{book.name}}" style="height: 50%; width: 100%;">
+        <div class="details">
+          <p>Author ::: <b>{{book.author}}</b></p>
+          <p>Category ::: <b>{{book.category}}</b></p>
+          <p>Published at ::: <b>{{book.published_date}}</b></p>
+          <p>Borrow fee ::: <b>{{book.fee}}</b></p>
+
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card"style="padding: 10px;">
+          <button id="open1" onclick="func1()" style="width: 50%;">Borrow now</button>
+          <form id="form3" style="display:none" method='POST' action="/view/book/{{book.id}}">
+            {% csrf_token %}
+            {%bootstrap_form form%}
+            <label for="email">Enter your email to verify your transaction</label>
+            <input type="email" class="form-control" placeholder="Enter your Email to confirm" name="email"><br>
+            <label for="number">Number of books you want?</label><br>
+            <input type="number" name="number" placeholder="Number of books"><br>
+            <button class="btn btn-warning" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%for message in messages%}
+    <h1>{{message}}</h1>
+  {%endfor%}
+</body>
+<script>
+  function func1() {
+    var x = document.getElementById("form3");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+</script>
+{% endblock%}
