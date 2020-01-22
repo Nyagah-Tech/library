@@ -5,6 +5,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.contrib.auth import get_user_model, login, authenticate, logout
 from django.contrib.auth.decorators import permission_required
+from paypal.standard.forms import PayPalPaymentsForm
+from django.conf import settings
+import random
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import json,JsonResponse
 
 
 # Create your views here.
@@ -49,18 +54,27 @@ def borrow_view(request,book_id):
     if request.method == 'POST':
         book = get_object_or_404(Books,id = book_id)
         form = borrowform(request.POST)
+       
+        
         
         if form.is_valid():
-            item = form.save(commit=False)
-            item.book_id = id
-            item.user_id = request.user
-            item.total_fee = book.fee
-            item.penalty = 0
-            item.save()
-            return redirect('home')
+            number = request.POST.get('number')
+            email = request.POST.get('email')
+            if User.objects.filter(email = email).first() is None:
+                messages.info(request,'Invalid email')
+                return redirect('borrow', book_id = book.id)
+            else:
+                item={
+                    'bookId':book_id,
+                    'user_id':request.user.id,
+                    'total_fee':book.fee * int(number),
+                } 
+                
+                request.session['order']=item
+                return redirect('process_payment')
         else :
             messages.info(request,'all fields are required')
-            return redirect('borrow',id = book.id)
+            return redirect('borrow',book_id = book.id)
     else:
         form = borrowform()
         book = get_object_or_404(Books,id = book_id)
@@ -84,6 +98,33 @@ def category_view(request,id):
     }
     return render(request,'all/category.html',context)
 
+#paypal
+#---------------------------------------------------------------
+@login_required()
+def process_payment(request):
+    item = request.session.get('order')
+    
+    book = Books.objects.get(id = item["bookId"])
+    
+    if item["total_fee"] != 0:
+        paypal_dict = {
+            'business':settings.PAYPAL_RECEIVER_EMAIL,
+            'amount':item["total_fee"],
+            'item_name':'{}'.format(book.name),
+            'invoice':str(random.randint(0000,9999)),
+            'currency_code':'USD',
+            'notify_url': "https://library.herokuapp.com/",
+            'return_url':"https://library.herokuapp.com/",
+            'cancel_return': 'https://forex254.herokuapp.com/payment-cancelled/',
+        }
+        
+        
+    
+        form = PayPalPaymentsForm(initial=paypal_dict)
+        return render(request,'paypal/process_payment.html',{"item":item,"form":form})
+    else:
+        messages.info(request,'you should input the number of books you need!')
+        return redirect('borrow',book_id = book.id)
 #ADMIN DASHBOARD
 #--------------------------------------------------------------
 @login_required()
@@ -118,6 +159,29 @@ def user_activate(request,user_id):
 def  dashboard(request):
     return render(request,'admin_site/dashboard.html')
 
+@login_required()
+@permission_required("True","home")
+def add_book(request):
+    if request.method == 'POST':
+        form = BooksForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("system_users")
+        else:
+            messages.info(request,['All fields are required'])
+            return redirect('add-book')
+    else:
+        form = BooksForm()
+        context = {
+            "form":form,
+        }
+        return render(request,'admin_site/add_book.html',context)
+        
+        
+        
+        
+        
 #END ADMIN
 #-----------------------------------------------------
 
+    
