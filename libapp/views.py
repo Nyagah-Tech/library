@@ -271,7 +271,7 @@ def add_user_notify(request,id):
         book_id = request.POST['book']
         book = Books.objects.get(id=book_id)
         user = User.objects.get(id = user_id)
-        borrower = Borrowing.objects.get(user_id_id =user.id)  
+        borrower = Borrowing.objects.filter(user_id_id =user.id)  
         if borrower.notification :
             notification.user.remove(user)
             notification.save()
