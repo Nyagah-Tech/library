@@ -1,0 +1,57 @@
+{%load bootstrap4%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body style="background-color: black; color: white;">
+    <div class="container">
+        <h1 class="text-center" style="margin-top: 50px;font-size: 55px;">Penalty Information!</h1>
+        <center>
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Ff%2Ff4%2FFrance_road_sign_A14.svg%2F1200px-France_road_sign_A14.svg.png&f=1&nofb=1" alt="" style="width: 30%;height: 40%;margin-top: 20px;">
+        </center>
+        <div class="card" style="margin-top: 70px;height:100%;padding: 20px; font-size: 20px;color: black !important;">
+
+            <div class="row" >
+                <div class="col-md-6">
+
+                    <p class="text-center">
+                       If you are directed to this page this means that your account has incurred a penalty due to prolong habit of not returning books 
+                       or you have lost a book.
+                       To activate your account you can pay the penalty or communicate to the administrator by filling the form below. 
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <form action="/pay/penalty/" method="POST" style="margin-bottom: 30px;">
+                    {%csrf_token%}
+                    <input type="hidden" value="300" name="penalty">
+                    <input type="submit" value="Pay penalty"  style="width: 50%;background-color:black;">
+                    </form>
+                    <button id="open1" onclick="func1()" style="width: 50%;margin-bottom: 30px; background-color: black;">fill form</button>
+                    <form id="form3" style="display:none" method='POST' action="/view/notify/">
+                        {% csrf_token %}
+                        {%bootstrap_form form%}
+                        <button class="btn btn-warning" type="submit" style="margin-bottom: 15px; width: 50%;">Submit</button>
+                    </form>
+                </div>
+    
+            </div>
+        </div>
+
+    </div>
+    <script>
+        function func1() {
+            var x = document.getElementById("form3");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+            } else {
+              x.style.display = "none";
+            }
+          }
+    </script>
+</body>
+</html>

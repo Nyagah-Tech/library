@@ -3,43 +3,182 @@
 {%load bootstrap4%}
 {%block content%}
 
-<body style="padding: 20px;">
-  <div class="card">
+<body>
+  <div id="banner-img" style="background-color:wheat !important;height: 300px;">
+        
+  </div>
+  <div class="head" style="text-align: center;margin-bottom: 50px;">
+    <h1 class="text-center">{{book.name}} book</h1>
+  </div>
+  <div class="container">
     <div class="row">
       <div class="col-md-8">
-        <h1 class="text-center">{{book.name}}</h1>
-        <img src="{{book.pic.url}}" alt="{{book.name}}" style="height: 50%; width: 100%;">
-        <div class="details">
-          <p>Author ::: <b>{{book.author}}</b></p>
-          <p>Category ::: <b>{{book.category}}</b></p>
-          <p>Published at ::: <b>{{book.published_date}}</b></p>
-          <p>Borrow fee ::: <b>{{book.fee}}</b></p>
-
+        <div class="card" style="padding: 15px;">
+ 
+          <img src="{{book.pic.url}}" alt="{{book.name}}" style="height: 50%; width: 100%;">
+          <div class="details">
+            <p>Author ::: <b>{{book.author}}</b></p>
+            <p>Category ::: <b>{{book.category}}</b></p>
+            <p>Published at ::: <b>{{book.published_date}}</b></p>
+            <p>Borrow fee ::: <b>{{book.fee}}</b></p>
+            <h2>Ratings</h2>
+            <hr>
+            <div class="row card-footer" style="background-color: black;color: white;margin-bottom: 0px;">
+              <div class="col-md-4">
+                <p>Content:  <b>{{content_rate}}%</b></p>
+              </div>
+              <div class="col-md-4">
+                <p>Physical apearance:  <b>{{physical_rate}}%</b></p>
+              </div>
+              <div class="col-md-4">
+                <p>Theme:  <b>{{theme_rate}}%</b></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card"style="padding: 10px;">
-          <button id="open1" onclick="func1()" style="width: 50%;">Borrow now</button>
+      <div class="col-md-4" style="padding: 20px;">
+        <div class="pay" style="padding: 10px;">
+          <button id="open1" onclick="func1()" style="width: 50%;margin-bottom: 30px;">Borrow now</button>
           <form id="form3" style="display:none" method='POST' action="/view/book/{{book.id}}">
             {% csrf_token %}
             {%bootstrap_form form%}
             <label for="email">Enter your email to verify your transaction</label>
             <input type="email" class="form-control" placeholder="Enter your Email to confirm" name="email"><br>
             <label for="number">Number of books you want?</label><br>
-            <input type="number" name="number" placeholder="Number of books"><br>
-            <button class="btn btn-warning" type="submit">Submit</button>
+            <input type="number" name="number" placeholder="Number of books"><br><br>
+            <button class="btn btn-warning" type="submit" style="margin-bottom: 15px;">Submit</button>
           </form>
         </div>
+        <div class="comment">
+          <button onclick="func2()" style="width: 50%;margin-bottom: 30px;">Comments</button>
+          <div id="comment" style="display: none;">
+            <form action="/comment/book/{{book.id}}" method="POST">
+              {%csrf_token%}
+              {%bootstrap_form comment_form%}
+              <input type="submit" value="Submit">
+            </form>
+            {%for comment in comments%}
+            <div class="card">
+              <p>{{comment.comment}}</p>
+              <p class="text-center">Posted by <b>{{cooment.posted_by}}</b> on <br>
+                <b>{{comment.posted_on}}</b>
+              </p>
+            </div>
+            {%empty%}
+            <h2>0 comments</h2>
+            {%endfor%}
+          </div>
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button"  data-toggle="modal" data-target="#exampleModalLong" style="width: 50%;margin-bottom: 30px;">
+          rate
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="margin-top: 200px;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">rate {{book.name}} book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- bodyy -->
+                <form action="/rate/book/{{book.id}}" method="POST">
+                  {%csrf_token%}
+                  <select name="content">
+                      <option name="">Content</option>
+                      <option name="" value="0">0</option>
+                      <option name="" value="1">1</option>
+                      <option name="" value="2">2</option>
+                      <option name="" value="3">3</option>
+                      <option name="" value="4">4</option>
+                      <option name="" value="5">5</option>
+                      <option name="" value="6">6</option>
+                      <option name="" value="7">7</option>
+                      <option name="" value="8">8</option>
+                      <option name="" value="9">9</option>
+  
+                  </select>
+                  <select  name="physical_appearance">
+                      <option name="">Physical</option>
+                      <option name="" value="0">0</option>
+                      <option name="" value="1">1</option>
+                      <option name="" value="2">2</option>
+                      <option name="" value="3">3</option>
+                      <option name="" value="4">4</option>
+                      <option name="" value="5">5</option>
+                      <option name="" value="6">6</option>
+                      <option name="" value="7">7</option>
+                      <option name="" value="8">8</option>
+                      <option name="" value="9">9</option>
+  
+                  </select >
+                  <select name="theme">
+                      <option name="">Theme</option>
+                      <option name="" value="0">0</option>
+                      <option name="" value="1">1</option>
+                      <option name="" value="2">2</option>
+                      <option name="" value="3">3</option>
+                      <option name="" value="4">4</option>
+                      <option name="" value="5">5</option>
+                      <option name="" value="6">6</option>
+                      <option name="" value="7">7</option>
+                      <option name="" value="8">8</option>
+                      <option name="" value="9">9</option>
+  
+                  </select>
+  
+                  <input type="submit" value="Rate" style="margin-left: 10%;background-color: black;color: white;">
+                  <div class="message">
+                      {% for message in messages%}
+                          <h3 class="alert-danger">{{message}}</h3>
+                      {% endfor %}
+                  </div>
+              </form>
+
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+       
       </div>
     </div>
   </div>
+  </div>
   {%for message in messages%}
-    <h1>{{message}}</h1>
+  <h1>{{message}}</h1>
   {%endfor%}
 </body>
 <script>
   function func1() {
     var x = document.getElementById("form3");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  function func2() {
+    var x = document.getElementById("comment");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  function func3() {
+    var x = document.getElementById("view");
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {

@@ -1,18 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
+{%extends 'all/base.html'%}
+{%load static%}
+{%load bootstrap4%}
+{%block content%}
+
 <body>
-    <a href="/logout/"><h2>Logout</h2></a>
-    <a href="/dashboard/"><h2>dashboard</h2></a>
 
-    {%for category in  categories%}
-    <a href="/books/category/{{category.id}}"><h3>{{category.name}}</h3></a>
-    {%endfor%}
+    <div id="home">
+        <img src="/static/paro" id="banner-img" alt="">
+        <div class="container">
+            <h1 class="text-center" style="font-size: 55px;">Category of books</h1>
+            <div class="row" id="card-row">
+                <div class="col-md-3" id="col">
+                    <a href="/books/category/1" style="text-decoration: none;">
+                        <div class="card wow fadeInUp" id="category-card">
+                            <div class="card-body">
 
+                                <h3 id="">Fiction</h3>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3" id="col">
+                    <a href="/books/category/4" style="text-decoration: none;">
+                        <div class="card wow slideInLeft" id="category-card">
+                            <div class="card-body">
+
+                                <h3 id="">Research</h3>
+
+                            </div>
+                        </div>
+                    </a>
+                </div><div class="col-md-3" id="col">
+                    <a href="/books/category/3" style="text-decoration: none;">
+                        <div class="card wow fadeInDown" id="category-card">
+                            <div class="card-body">
+
+                                <h3 id="">Thriller</h3>
+
+                            </div>
+                        </div>
+                    </a>
+                </div><div class="col-md-3" id="col">
+                    <a href="/books/category/5" style="text-decoration: none;">
+                        <div class="card wow slideInRight" id="category-card">
+                            <div class="card-body">
+
+                                <h3 id="">Science</h3>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
-</html>
+{%endblock%}

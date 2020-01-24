@@ -42,12 +42,26 @@ def registration(request):
         return render(request,'auth/registration.html')
 @login_required()
 def home(request):
+    users = Borrowing.objects.filter(user_id_id = request.user.id)
+    for user in users :
+        if user.notification :
+            return redirect('penalty',id=user.book_id_id)
     categories = Category.objects.all()
     context = {
         'categories':categories,
-    }
-    
+    }  
     return render(request,'all/home.html',context)
+@login_required()
+def penalty(request,id):
+    users = Borrowing.objects.filter(user_id_id = request.user.id)
+    for user in users :
+        if user.notification :
+            form = User_note_form()
+          
+            return render(request,'all/penalty.html',{"user":user,"form":form})
+   
+    
+
 
 @login_required()
 def borrow_view(request,book_id):
@@ -72,17 +86,52 @@ def borrow_view(request,book_id):
                 
                 request.session['order']=item
                 return redirect('process_payment')
+            
         else :
             messages.info(request,'all fields are required')
             return redirect('borrow',book_id = book.id)
     else:
         form = borrowform()
         book = get_object_or_404(Books,id = book_id)
-        context = {
-            'book':book,
-            'form':form,
-        }
-        return render(request,'all/single_book.html',context)
+        comment_form= commentform()
+        comments = Comment.objects.filter(book_id = book_id)
+        rates = Rating.objects.filter(book_id = book_id)
+        content=[]
+        theme=[]
+        physical=[]
+        if rates:
+            for rate in rates:
+                content.append(rate.content)
+                theme.append(rate.theme)
+                physical.append(rate.physical_appearance)
+            total = len(content) * 9
+            content_rate = round(sum(content)/total * 100,2)
+            theme_rate = round(sum(theme)/total * 100,2)
+            physical_rate = round(sum(physical)/total *100)
+            context = {
+                'book':book,
+                'form':form,
+                'comment_form':comment_form,
+                'comments':comments,
+                'content_rate':content_rate,
+                'theme_rate':theme_rate,
+                'physical_rate':physical_rate,
+            }
+            return render(request,'all/single_book.html',context)
+        else:
+            theme_rate = 0
+            physical_rate = 0
+            content_rate = 0 
+            context = {
+                'book':book,
+                'form':form,
+                'comment_form':comment_form,
+                'comments':comments,
+                'content_rate':content_rate,
+                'theme_rate':theme_rate,
+                'physical_rate':physical_rate,
+            }
+            return render(request,'all/single_book.html',context)
     
 @login_required()
 def logout_view(request):
@@ -92,9 +141,11 @@ def logout_view(request):
 @login_required()
 def category_view(request,id):
     books = Books.objects.filter(category = id)
+    category = Category.objects.get(id = id)
     
     context = {
         'books':books,
+        'category':category,
     }
     return render(request,'all/category.html',context)
 
@@ -177,7 +228,48 @@ def add_book(request):
         }
         return render(request,'admin_site/add_book.html',context)
         
+@login_required()
+@permission_required("True","home")
+def notification(request):
+    user_borrow = Borrowing.objects.all()
+    notification = Notification.objects.all()
+    context = {
+        "user_borrow":user_borrow,
+        "notification":notification,
+    }
+    return render(request,'admin_site/notification.html',context)
+
+@login_required()
+@permission_required("True","home")
+def add_user_notify(request,id):
+    notification = get_object_or_404(Notification,id = id)
+    if request.method =='POST':
+        user_id = request.POST['note']
+        book_id = request.POST['book']
+        book = Books.objects.get(id=book_id)
+        user = User.objects.get(id = user_id)
+        borrower = Borrowing.objects.get(user_id_id =user.id)  
+        if borrower.notification :
+            notification.user.remove(user)
+            notification.save()
+            borrower.notification = False
+            borrower.save()
+            return redirect('add-notify',id=id)
+        else: 
+            notification.user.add(user)
+            notification.save()
+            borrower.notification = True
+            borrower.save()
+            return redirect('notification')
+    else:
+        messages.info(request,'process succesful')
+        return redirect('notification')
         
+            
+        
+        
+    
+
         
         
         
@@ -185,5 +277,115 @@ def add_book(request):
 #-----------------------------------------------------
 
 @login_required()
-def comment_view(request,book_id):
-    pass
+def comment_view(request,id):
+    book = Books.objects.get(id = id)
+    if request.method =='POST':
+        form = commentform(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.posted_by = request.user
+            comment.book_id = book
+            comment.save()
+            return redirect('borrow',book_id = id)
+        else:
+            messages.info(request,'All fields are required')
+            return redirect('borrow',book_id = id)
+    else:
+        messages.info(request,'Invalid operation')
+        return redirect('borrow',book_id = id)
+    
+@login_required()
+def rate_view(request,id):
+    if request.method == 'POST':
+        book = Books.objects.get(id=id)
+        rates = Rating.objects.filter(book_id = id)
+        for rate in rates:
+            if rate.user== request.user:
+                messages.info(request,'You have already rated the book')
+                return redirect('category',id = book.category.id )
+            
+        book = Books.objects.get(id = id)
+        content = request.POST.get('content')
+        physical = request.POST.get('physical_appearance')
+        theme = request.POST.get('theme')
+        
+        if book and content and physical and theme:
+            rate = Rating(content = content,theme = theme,physical_appearance = physical,user = request.user,book_id = book)
+            rate.save()
+            return redirect('category',id = book.category.id)
+        else:
+            messages.info(request,'All fields are required')
+            return redirect('category',id = book.category.id)
+
+@login_required()
+def profile_view(request):
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST,request.FILES,instance=request.user.profile)
+        form1 = UserUpdateform(request.POST,instance=request.user)
+        if form.is_valid() and form1.is_valid():
+            form1.save() 
+            form.save()
+            return redirect('profile')
+    else:
+        profile = Profile.objects.get(user = request.user)
+        borrowed_books = Borrowing.objects.filter(user_id_id = request.user.id)
+        form = UpdateProfileForm(instance=request.user.profile)
+        form1 = UserUpdateform(instance=request.user)
+        context ={
+            'profile':profile,
+            'borrowed_books':borrowed_books,
+            'profile_form':form,
+            'user_form':form1,
+        }
+        return render(request,'all/profile.html',context)
+
+@login_required()
+def user_communicate(request):
+    if request.method == "POST":
+        form = User_note_form(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.posted_by = request.user
+            note.save()
+            messages.info(request,'Your response has been recieved')
+            return redirect('penalty',id = request.user.id)
+        else:
+            messages.info(request,'all fields are required')
+            return redirect('penalty',id = request.user.id)
+    else:
+        return redirect('penalty', id= request.user.id)
+    
+@login_required()
+def pay_penalty(request):
+    if request.method == 'POST':
+        total = request.POST['penalty']
+        item ={
+            "total_fee":total,
+        }
+           
+        request.session['order']=item
+        return redirect('penalty_payment')
+    
+@login_required()
+def penalty_payment(request):
+    item = request.session.get('order')
+    
+    if item["total_fee"] != 0:
+        paypal_dict = {
+            'business':settings.PAYPAL_RECEIVER_EMAIL,
+            'amount':item["total_fee"],
+            'item_name':'Product',
+            'invoice':str(random.randint(0000,9999)),
+            'currency_code':'USD',
+            'notify_url': "https://library.herokuapp.com/",
+            'return_url':"https://library.herokuapp.com/",
+            'cancel_return': 'https://forex254.herokuapp.com/payment-cancelled/',
+        }
+        
+        
+    
+        form = PayPalPaymentsForm(initial=paypal_dict)
+        return render(request,'paypal/process_payment.html',{"item":item,"form":form})
+    else:
+        messages.info(request,'you should input the number of books you need!')
+        return redirect('borrow',book_id = book.id)

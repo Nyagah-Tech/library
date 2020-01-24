@@ -2,6 +2,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,20 +14,62 @@
     {% endif %}
 
     {% block styles %}
-        {% bootstrap_css %}
-        
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{ static 'css/nav.css' }">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
     {% endblock %}
-</head>
-<body>
     
+
+
+</head>
+
+<style>
+    #home {
+        background-image: url();
+    }
+
+    #card-row {
+        margin-top: 16%;
+        margin-bottom: 10%;
+        text-align: center;
+    }
+    
+    #category-card {
+        margin-bottom: 9%;
+        background-color: wheat;
+        color: black;
+        padding: 15px;
+    }
+
+    #category-card:hover{
+        border: rgba(116, 114, 114, 0);
+    }
+
+    #banner-img {
+        width: 100%;
+        height: 80vh;
+
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);
+
+    }
+</style>
+
+<body>
+    {%include 'all/navbar.html'%}
 
     {% block content %}
 
     {% endblock %}
-    
+
     {% block scripts %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {% bootstrap_javascript %}
     {% endblock %}
 </body>
+
 </html>

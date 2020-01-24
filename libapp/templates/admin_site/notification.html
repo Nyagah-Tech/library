@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css ">
+    <link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css ">
+    <title>Document</title>
+</head>
+
+<body style="background-color: white;">
+    
+    {% include 'admin_site/others/side_nav.html' %}        
+    <div class="container-fluid">
+        <div class="row">        
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="chartjs-size-monitor"
+                style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand"
+                style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink"
+            style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+        </div>
+    </div>
+    <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Registered Users</h1>
+</div>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <p class="bg-success" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+    {% endfor %}
+</ul>
+{% endif %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Notification</th>
+            <th scope="col">Notification description</th>
+            <th scope="col">Last login</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date joined</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {%for notify in notification%}
+        {% for user in user_borrow %}
+        <tr>
+            <td>{{ user.user_id.username }}</td>
+            <td>
+                {% if user.notification %}
+                <form action="/user/notification/{{notify.id}}" method="POST">
+                    {%csrf_token%}
+                    <input type="hidden" name="note" value="{{user.user_id_id}}">
+                    <input type="hidden" name="book" value="{{user.book_id_id}}">
+                    <input type="submit" value="Delete notification"class="btn btn-sm btn-danger">
+                </form>
+                {% else %}
+                <form action="/user/notification/{{notify.id}}" method="POST">
+                    {%csrf_token%}
+                    <input type="hidden" name="note" value="{{user.user_id_id}}">
+                    <input type="hidden" name="book" value="{{user.book_id_id}}">
+                    <input type="submit" value="Add notification"class="btn btn-sm btn-danger">
+                </form>
+                {% endif %}
+                
+            </td>
+            <td>{{ notify.name }}</td>
+            <td>{{ notify.notification }}</td>
+            <td>{{ user.user_id.last_login }}</td>
+            <td>{{ user.user_id.date_joined }}</td>
+        </tr>
+        
+        {% endfor %}
+        {%endfor%}
+    </tbody>
+</table>
+</main>
+</div>
+</div>
+</body>
+</html>

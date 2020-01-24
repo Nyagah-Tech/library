@@ -48,9 +48,10 @@ class Borrowing(models.Model):
     no_of_days = models.IntegerField(default=1)
     penalty = models.IntegerField(default=0)
     no_of_books = models.IntegerField(default=0)
+    notification = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.book_id
+        return self.book_id.name
     
 class Profile(models.Model):
     '''
@@ -74,5 +75,18 @@ class Comment(models.Model):
     posted_by = models.ForeignKey(User,on_delete=models.CASCADE)
     book_id = models.ForeignKey(Books,on_delete = models.CASCADE)
     
+    def __str__(self):
+        return self.book_id
     
+class Notification(models.Model):
+    name = models.CharField(max_length=200)
+    notification = HTMLField()
+    user = models.ManyToManyField(User,blank = True,related_name="notification")
     
+    def __str__(self):
+        return self.name
+
+class User_notification(models.Model):
+    posted_by = models.ForeignKey(User,on_delete = models.CASCADE)
+    notification = HTMLField()
+    posted_on = models.DateTimeField(auto_now_add=True)

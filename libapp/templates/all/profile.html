@@ -1,0 +1,71 @@
+{%extends 'all/base.html'%}
+{%load static%}
+{%load bootstrap4%}
+{%block content%}
+
+<body>
+    <div id="banner-img" style="background-color:wheat !important;height: 300px;">
+
+    </div>
+    <div class="head" style="text-align: center;margin-bottom: 50px;">
+        <h1 class="text-center">{{profile.user.username}} profile</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card" style="padding: 15px;">
+
+                    <img src="{{profile.profile_pic.url}}" alt="No profile picture" style="height: 50%; width: 100%;">
+                    <div class="details">
+                        <p><b>Bio :::</b> {{profile.bio}}</p>
+                        <p><b>updated on</b> <i>{{profile.update_on}}</i></p>
+                        <p><b>Borrowed books ::: </b> {{borrowed_books.count}}</p>
+                        <p><b> Books</b></p>
+                        <p><i>
+                                <ul>
+                                    {%for books in borrowed_books %}
+                                    <li>
+                                        {{books.book_id.name}}
+                                    </li>
+                                    {%endfor%}
+                                </ul>
+                            </i></p>
+
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="padding: 20px;">
+                <div class="pay" style="padding: 10px;">
+                    <button id="open1" onclick="func1()" style="width: 50%;margin-bottom: 30px;">Update profile</button>
+                    <form id="form3" style="display:none" method='POST' action="/profile/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                       {%bootstrap_form user_form%}
+                       {%bootstrap_form profile_form%}
+                        
+                        <button class="btn btn-warning" type="submit" style="margin-bottom: 15px;">Submit</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    {%for message in messages%}
+    <h1>{{message}}</h1>
+    {%endfor%}
+</body>
+<script>
+    function func1() {
+        var x = document.getElementById("form3");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+   
+</script>
+{% endblock%}

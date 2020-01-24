@@ -2,17 +2,119 @@
 {%load bootstrap4%}
 {%load static%}
 {%block content%}
-<body style="margin-top: 50px;">
-    
-    <div class="container">
+
+
+<body style="margin-bottom: 100px;" >
+    <div id="banner-img" style="background-color: black !important;height: 300px;">
+        
+    </div>
+    <div class="head" style="text-align: center;margin-bottom: 50px;">
+        <h1>{{category.name}} books</h1>
+    </div>
+    <div class="container" >
+        
         <div class="row">
             {% for book in books %}
             <div class="col-md-4">
-                <div class="card">
-                    <p>{{book.name}}</p>
-                    {{book.pic.url}}
+                <div class="card" style="padding: 10px;">
+                    <h2 class="text-center">{{book.name}}</h2>
+                    
                     <img src="{{book.pic.url}}" alt="" style="width: 100%;height: 100%;">
-                    <a href="/view/book/{{book.id}}" class="btn btn primary">Borrow</a>
+                    <div class="details" style="margin-top: 20px;">
+                        <p class="text-center"><b >{{book.name}} overview</b></p>
+                        <p >{{book.description}}</p>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col-md-6">
+                                <a href="/view/book/{{book.id}}" class="btn " style="background-color: black;color: white;">Get book</a>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLong" style="background-color: black;color: white;">
+                                    Rate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Button trigger modal -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="background-color: black;color:white">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLongTitle" style="color: black; padding-left: 30%;font-size: 35px;">Rate this book</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- bodyy -->
+                                    <form action="/rate/book/{{book.id}}" method="POST">
+                                        {%csrf_token%}
+                                        <select name="content">
+                                            <option name="">Content</option>
+                                            <option name="" value="0">0</option>
+                                            <option name="" value="1">1</option>
+                                            <option name="" value="2">2</option>
+                                            <option name="" value="3">3</option>
+                                            <option name="" value="4">4</option>
+                                            <option name="" value="5">5</option>
+                                            <option name="" value="6">6</option>
+                                            <option name="" value="7">7</option>
+                                            <option name="" value="8">8</option>
+                                            <option name="" value="9">9</option>
+                        
+                                        </select>
+                                        <select  name="physical_appearance">
+                                            <option name="">Physical</option>
+                                            <option name="" value="0">0</option>
+                                            <option name="" value="1">1</option>
+                                            <option name="" value="2">2</option>
+                                            <option name="" value="3">3</option>
+                                            <option name="" value="4">4</option>
+                                            <option name="" value="5">5</option>
+                                            <option name="" value="6">6</option>
+                                            <option name="" value="7">7</option>
+                                            <option name="" value="8">8</option>
+                                            <option name="" value="9">9</option>
+                        
+                                        </select >
+                                        <select name="theme">
+                                            <option name="">Theme</option>
+                                            <option name="" value="0">0</option>
+                                            <option name="" value="1">1</option>
+                                            <option name="" value="2">2</option>
+                                            <option name="" value="3">3</option>
+                                            <option name="" value="4">4</option>
+                                            <option name="" value="5">5</option>
+                                            <option name="" value="6">6</option>
+                                            <option name="" value="7">7</option>
+                                            <option name="" value="8">8</option>
+                                            <option name="" value="9">9</option>
+                        
+                                        </select>
+                        
+                                        <input type="submit" value="Rate" style="margin-left: 10%;background-color: black;color: white;">
+                                        <div class="message">
+                                            {% for message in messages%}
+                                                <h3 class="alert-danger">{{message}}</h3>
+                                            {% endfor %}
+                                        </div>
+                                    </form>
+
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             {% endfor %}
