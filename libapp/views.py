@@ -276,14 +276,14 @@ def add_user_notify(request,id):
             if borro.notification :
                 notification.user.remove(user)
                 notification.save()
-                borrower.notification = False
-                borrower.save()
+                borro.notification = False
+                borro.save()
                 return redirect('add-notify',id=id)
             else: 
                 notification.user.add(user)
                 notification.save()
-                borrower.notification = True
-                borrower.save()
+                borro.notification = True
+                borro.save()
                 return redirect('notification')
     else:
         messages.info(request,'process succesful')
