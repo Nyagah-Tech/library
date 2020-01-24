@@ -271,19 +271,20 @@ def add_user_notify(request,id):
         book_id = request.POST['book']
         book = Books.objects.get(id=book_id)
         user = User.objects.get(id = user_id)
-        borrower = Borrowing.objects.filter(user_id_id =user.id)  
-        if borrower.notification :
-            notification.user.remove(user)
-            notification.save()
-            borrower.notification = False
-            borrower.save()
-            return redirect('add-notify',id=id)
-        else: 
-            notification.user.add(user)
-            notification.save()
-            borrower.notification = True
-            borrower.save()
-            return redirect('notification')
+        borrower = Borrowing.objects.filter(user_id_id =user.id) 
+        for borro in borrower 
+            if borro.notification :
+                notification.user.remove(user)
+                notification.save()
+                borrower.notification = False
+                borrower.save()
+                return redirect('add-notify',id=id)
+            else: 
+                notification.user.add(user)
+                notification.save()
+                borrower.notification = True
+                borrower.save()
+                return redirect('notification')
     else:
         messages.info(request,'process succesful')
         return redirect('notification')
