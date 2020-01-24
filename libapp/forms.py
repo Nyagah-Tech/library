@@ -25,6 +25,7 @@ class borrowform(forms.ModelForm):
             'penalty',
             'total_fee',
             'no_of_books',
+            'notification',
         ]
             
 class commentform(forms.ModelForm):

@@ -26,6 +26,9 @@ urlpatterns = [
     #paypal
     path("paypal/",include('paypal.standard.ipn.urls')),
     path("process-payment/",views.process_payment,name="process_payment"),
+    path('payment-done/', views.payment_done, name='payment-done'),
+    path('payment-cancelled/', views.payment_canceled, name='payment-cancelled'),
+    path('q-forex-binary-f-k-defw-dshsgdtdhvdsss-scczzc-url/',include('paypal.standard.ipn.urls')),
     path("penalty-payment/",views.penalty_payment,name="penalty_payment")
     
     

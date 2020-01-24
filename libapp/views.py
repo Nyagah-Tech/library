@@ -164,9 +164,9 @@ def process_payment(request):
             'item_name':'{}'.format(book.name),
             'invoice':str(random.randint(0000,9999)),
             'currency_code':'USD',
-            'notify_url': "https://library.herokuapp.com/",
-            'return_url':"https://library.herokuapp.com/",
-            'cancel_return': 'https://forex254.herokuapp.com/payment-cancelled/',
+            'notify_url': 'https://librarydan.herokuapp.com/q-forex-binary-f-k-defw-dshsgdtdhvdsss-scczzc-url/',
+            'return_url':"https://librarydan.herokuapp.com/payment-done/",
+            'cancel_return': "https://librarydan.herokuapp.com/payment-cancelled/",
         }
         
         
@@ -176,6 +176,20 @@ def process_payment(request):
     else:
         messages.info(request,'you should input the number of books you need!')
         return redirect('borrow',book_id = book.id)
+    
+@csrf_exempt
+def payment_done(request):
+    
+    args={'post':request.POST,'get':request.GET}
+        
+    return render(request, 'paypal/payment_done.html',args)
+ 
+ 
+@csrf_exempt
+def payment_canceled(request):
+    args={'post':request.POST,'get':request.GET}
+    return render(request, 'paypal/payment_cancelled.html',args)
+
 #ADMIN DASHBOARD
 #--------------------------------------------------------------
 @login_required()
