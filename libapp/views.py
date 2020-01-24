@@ -179,6 +179,7 @@ def process_payment(request):
         
         
     
+    
         form = PayPalPaymentsForm(initial=paypal_dict)
         return render(request,'paypal/process_payment.html',{"item":item,"form":form})
     else:
