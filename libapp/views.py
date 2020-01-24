@@ -265,7 +265,11 @@ def add_user_notify(request,id):
         messages.info(request,'process succesful')
         return redirect('notification')
         
-            
+@login_required()        
+@permission_required("True","home")
+def all_notes(request):
+    notes = User_notification.objects.all()
+    return render(request,'admin_site/all_note.html',{"notes":notes})
         
         
     

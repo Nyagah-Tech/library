@@ -22,6 +22,7 @@ urlpatterns = [
     path("add/book",views.add_book,name="add-book"),
     path("notification/",views.notification,name="notification"),
     path("user/notification/<int:id>",views.add_user_notify,name="add-notify"),
+    path("all/notifications/",views.all_notes,name="all-notes"),
     #paypal
     path("paypal/",include('paypal.standard.ipn.urls')),
     path("process-payment/",views.process_payment,name="process_payment"),
