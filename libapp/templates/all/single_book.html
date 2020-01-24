@@ -2,10 +2,99 @@
 {%load static%}
 {%load bootstrap4%}
 {%block content%}
+<style>
+  .button {
+    display: inline-flex;
+    height: 40px;
+    width: 50%;
+    border: 2px solid #BFC0C0;
+    margin: 20px 20px 20px 20px;
+    color: #BFC0C0;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: .8em;
+    letter-spacing: 1.5px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  a {
+    color: #BFC0C0;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+
+  .button-5 {
+
+    position: relative;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition: all .5s ease-Out;
+
+  }
+
+  .button-5 a {
+
+    position: relative;
+
+    transition: all .45s ease-Out;
+    /* Helps in making the object fade away */
+
+  }
+
+  /* object that coming on top of the words its a div */
+
+  .translate {
+
+    transform: rotate(50deg);
+
+    width: 100%;
+
+    height: 250%;
+
+    left: -200px;
+
+    top: -30px;
+
+    background: white;
+
+    position: absolute;
+
+    transition: all .5s ease-Out;
+
+  }
+
+  .button-5:hover {
+
+    background-color: black;
+
+    transform: translateY(-7px);
+    /* its like padding bottom */
+
+    transition: all .8s ease-Out;
+
+  }
+
+  .button-5:hover #translate {
+
+    left: 0;
+
+  }
+
+  .button-5:hover a {
+
+    color: black;
+
+  }
+</style>
 
 <body>
   <div id="banner-img" style="background-color:wheat !important;height: 300px;">
-        
+
   </div>
   <div class="head" style="text-align: center;margin-bottom: 50px;">
     <h1 class="text-center">{{book.name}} book</h1>
@@ -14,7 +103,7 @@
     <div class="row">
       <div class="col-md-8">
         <div class="card" style="padding: 15px;">
- 
+
           <img src="{{book.pic.url}}" alt="{{book.name}}" style="height: 50%; width: 100%;">
           <div class="details">
             <p>Author ::: <b>{{book.author}}</b></p>
@@ -25,13 +114,13 @@
             <hr>
             <div class="row card-footer" style="background-color: black;color: white;margin-bottom: 0px;">
               <div class="col-md-4">
-                <p>Content:  <b>{{content_rate}}%</b></p>
+                <p>Content: <b>{{content_rate}}%</b></p>
               </div>
               <div class="col-md-4">
-                <p>Physical apearance:  <b>{{physical_rate}}%</b></p>
+                <p>Physical apearance: <b>{{physical_rate}}%</b></p>
               </div>
               <div class="col-md-4">
-                <p>Theme:  <b>{{theme_rate}}%</b></p>
+                <p>Theme: <b>{{theme_rate}}%</b></p>
               </div>
             </div>
           </div>
@@ -39,7 +128,10 @@
       </div>
       <div class="col-md-4" style="padding: 20px;">
         <div class="pay" style="padding: 10px;">
-          <button id="open1" onclick="func1()" style="width: 50%;margin-bottom: 30px;">Borrow now</button>
+          <div class="button button-5">
+            <div class="translate"></div>
+            <a id="open1" onclick="func1()">Borrow now</a>
+          </div>
           <form id="form3" style="display:none" method='POST' action="/view/book/{{book.id}}">
             {% csrf_token %}
             {%bootstrap_form form%}
@@ -51,7 +143,8 @@
           </form>
         </div>
         <div class="comment">
-          <button onclick="func2()" style="width: 50%;margin-bottom: 30px;">Comments</button>
+          
+          <button class="button button-5" onclick="func2()" style="width: 50%;margin-bottom: 30px;">Comments</button>
           <div id="comment" style="display: none;">
             <form action="/comment/book/{{book.id}}" method="POST">
               {%csrf_token%}
@@ -71,7 +164,8 @@
           </div>
         </div>
         <!-- Button trigger modal -->
-        <button type="button"  data-toggle="modal" data-target="#exampleModalLong" style="width: 50%;margin-bottom: 30px;">
+        <button class="button button-5" type="button" data-toggle="modal" data-target="#exampleModalLong"
+          style="width: 50%;margin-bottom: 30px;">
           rate
         </button>
 
@@ -91,67 +185,67 @@
                 <form action="/rate/book/{{book.id}}" method="POST">
                   {%csrf_token%}
                   <select name="content">
-                      <option name="">Content</option>
-                      <option name="" value="0">0</option>
-                      <option name="" value="1">1</option>
-                      <option name="" value="2">2</option>
-                      <option name="" value="3">3</option>
-                      <option name="" value="4">4</option>
-                      <option name="" value="5">5</option>
-                      <option name="" value="6">6</option>
-                      <option name="" value="7">7</option>
-                      <option name="" value="8">8</option>
-                      <option name="" value="9">9</option>
-  
+                    <option name="">Content</option>
+                    <option name="" value="0">0</option>
+                    <option name="" value="1">1</option>
+                    <option name="" value="2">2</option>
+                    <option name="" value="3">3</option>
+                    <option name="" value="4">4</option>
+                    <option name="" value="5">5</option>
+                    <option name="" value="6">6</option>
+                    <option name="" value="7">7</option>
+                    <option name="" value="8">8</option>
+                    <option name="" value="9">9</option>
+
                   </select>
-                  <select  name="physical_appearance">
-                      <option name="">Physical</option>
-                      <option name="" value="0">0</option>
-                      <option name="" value="1">1</option>
-                      <option name="" value="2">2</option>
-                      <option name="" value="3">3</option>
-                      <option name="" value="4">4</option>
-                      <option name="" value="5">5</option>
-                      <option name="" value="6">6</option>
-                      <option name="" value="7">7</option>
-                      <option name="" value="8">8</option>
-                      <option name="" value="9">9</option>
-  
-                  </select >
+                  <select name="physical_appearance">
+                    <option name="">Physical</option>
+                    <option name="" value="0">0</option>
+                    <option name="" value="1">1</option>
+                    <option name="" value="2">2</option>
+                    <option name="" value="3">3</option>
+                    <option name="" value="4">4</option>
+                    <option name="" value="5">5</option>
+                    <option name="" value="6">6</option>
+                    <option name="" value="7">7</option>
+                    <option name="" value="8">8</option>
+                    <option name="" value="9">9</option>
+
+                  </select>
                   <select name="theme">
-                      <option name="">Theme</option>
-                      <option name="" value="0">0</option>
-                      <option name="" value="1">1</option>
-                      <option name="" value="2">2</option>
-                      <option name="" value="3">3</option>
-                      <option name="" value="4">4</option>
-                      <option name="" value="5">5</option>
-                      <option name="" value="6">6</option>
-                      <option name="" value="7">7</option>
-                      <option name="" value="8">8</option>
-                      <option name="" value="9">9</option>
-  
+                    <option name="">Theme</option>
+                    <option name="" value="0">0</option>
+                    <option name="" value="1">1</option>
+                    <option name="" value="2">2</option>
+                    <option name="" value="3">3</option>
+                    <option name="" value="4">4</option>
+                    <option name="" value="5">5</option>
+                    <option name="" value="6">6</option>
+                    <option name="" value="7">7</option>
+                    <option name="" value="8">8</option>
+                    <option name="" value="9">9</option>
+
                   </select>
-  
+
                   <input type="submit" value="Rate" style="margin-left: 10%;background-color: black;color: white;">
                   <div class="message">
-                      {% for message in messages%}
-                          <h3 class="alert-danger">{{message}}</h3>
-                      {% endfor %}
+                    {% for message in messages%}
+                    <h3 class="alert-danger">{{message}}</h3>
+                    {% endfor %}
                   </div>
-              </form>
+                </form>
 
 
 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                
+
               </div>
             </div>
           </div>
         </div>
-       
+
       </div>
     </div>
   </div>
