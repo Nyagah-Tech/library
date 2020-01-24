@@ -73,6 +73,7 @@ def borrow_view(request,book_id):
         
         if form.is_valid():
             number = request.POST.get('number')
+            total_fee = book.fee*int(number)
             email = request.POST.get('email')
             if User.objects.filter(email = email).first() is None:
                 messages.info(request,'Invalid email')
@@ -83,6 +84,13 @@ def borrow_view(request,book_id):
                     'user_id':request.user.id,
                     'total_fee':book.fee * int(number),
                 } 
+                borrow = Borrowing(book_id = book,
+                                   user_id = request.user,
+                                   total_fee = total_fee,
+                                   no_of_days = number,
+                                   no_of_books = number,
+                                    )
+                borrow.save()
                 
                 request.session['order']=item
                 return redirect('process_payment')
@@ -395,9 +403,9 @@ def penalty_payment(request):
             'item_name':'Product',
             'invoice':str(random.randint(0000,9999)),
             'currency_code':'USD',
-            'notify_url': "https://library.herokuapp.com/",
-            'return_url':"https://library.herokuapp.com/",
-            'cancel_return': 'https://forex254.herokuapp.com/payment-cancelled/',
+            'notify_url': 'https://librarydan.herokuapp.com/q-forex-binary-f-k-defw-dshsgdtdhvdsss-scczzc-url/',
+            'return_url':"https://librarydan.herokuapp.com/penalty-done/",
+            'cancel_return': "https://librarydan.herokuapp.com/payment-cancelled/",
         }
         
         
@@ -406,4 +414,13 @@ def penalty_payment(request):
         return render(request,'paypal/process_payment.html',{"item":item,"form":form})
     else:
         messages.info(request,'you should input the number of books you need!')
-        return redirect('borrow',book_id = book.id)
+        return redirect('home')
+
+@login_required()
+def penalty_done(request):
+    users = Borrowing.objects.filter(user_id_id = request.user.id)
+    for user in users :
+        if user.notification:
+            user.notification = False
+            user.save()
+            return redirect('home')
