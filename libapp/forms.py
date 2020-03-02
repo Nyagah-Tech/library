@@ -10,6 +10,7 @@ class BooksForm(forms.ModelForm):
             'author',
             'category',
             'description',
+            'quantity',
             'published_date',
             'fee',
             'pic',

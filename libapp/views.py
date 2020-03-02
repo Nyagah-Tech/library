@@ -294,13 +294,69 @@ def add_user_notify(request,id):
 def all_notes(request):
     notes = User_notification.objects.all()
     return render(request,'admin_site/all_note.html',{"notes":notes})
-        
-        
-    
 
+@login_required()
+@permission_required("True","home")
+def all_books(request):
+    allBooks = Books.objects.all()
+    context ={
+        "allBooks":allBooks,
+    }
+    return render(request,"admin_site/allbooks.html",context)
+
+@login_required()
+@permission_required("True","home")
+def edit_book(request,id):
+    if request.method == 'POST':
+        book = get_object_or_404(Books,id = id)
+        book_form = BooksForm(request.POST,instance=book)
+        if book_form.is_valid():
+            updated_book = book_form.save()
+            return redirect('all_books')
+        else:
+            messages.info(request,"please edit the book information")
+            return redirect("update-book",id = book.id)
+    else:
+        book = get_object_or_404(Books,id = id)
+        editBookForm  = BooksForm(instance=book)
+        context ={
+            "book":book,
+            "editBookForm":editBookForm,
+        }
+        return render(request,"admin_site/Edit_book.html",context)
         
-        
-        
+@login_required()           
+@permission_required("True","home")
+def delete_book(request,book_id):
+    book = Books.objects.get(id = book_id)
+    book.delete()
+    return redirect("all_books")
+
+@login_required()
+@permission_required("True","home")
+def search_book_by_name(request):
+    if request.method == 'POST':
+        search_term = request.POsT['searchterm']
+        if search_term is None:
+            messages.info(request,"please fill in the search input field")
+            return redirect('all_books')
+        else:
+            books = Books.objects.filter(name = name)
+            context={
+                "books":books,
+            }
+            return render(request, "admin_site/search.html",context)
+    else:
+        return redirect('all_books')
+@login_required()      
+@permission_required("True","home")
+def get_all_categories(request):
+    categories = Category.objects.all()
+    context={
+        "categories":categories,
+    }
+    return render(request,"admin_site/all_categories.html",context)
+          
 #END ADMIN
 #-----------------------------------------------------
 

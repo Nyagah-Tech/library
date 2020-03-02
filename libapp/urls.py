@@ -23,6 +23,11 @@ urlpatterns = [
     path("notification/",views.notification,name="notification"),
     path("user/notification/<int:id>",views.add_user_notify,name="add-notify"),
     path("all/notifications/",views.all_notes,name="all-notes"),
+    path("all-books/",views.all_books,name = "all_books"),
+    path("update-book/<int:id>",views.edit_book,name="update-book"),
+    path("delete-book/<int:book_id>",views.delete_book,name="delete-book"),
+    path("search-book/",views.search_book_by_name,name="search"),
+    path("all-categories/",views.get_all_categories,name = "all-categories"),
     #paypal
     path("paypal/",include('paypal.standard.ipn.urls')),
     path("process-payment/",views.process_payment,name="process_payment"),
