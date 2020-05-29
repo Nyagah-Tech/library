@@ -1,75 +1,34 @@
 {% load bootstrap4 %}
-{% load static %}
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
     {% if title %}
     <title>{{title}}</title>
     {% else %}
-    <title>Forex</title>
+    <title>Library</title>
     {% endif %}
 
-    {% block styles %}
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="{ static 'css/nav.css' }">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
-    {% endblock %}
-    
-
-
 </head>
-
-<style>
-    #home {
-        background-image: url();
-    }
-
-    #card-row {
-        margin-top: 16%;
-        margin-bottom: 10%;
-        text-align: center;
-    }
-    
-    #category-card {
-        margin-bottom: 9%;
-        background-color: wheat;
-        color: black;
-        padding: 15px;
-    }
-
-    #category-card:hover{
-        border: rgba(116, 114, 114, 0);
-    }
-
-    #banner-img {
-        width: 100%;
-        height: 80vh;
-
-        -webkit-clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);
-        clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);
-
-    }
-</style>
+{%include 'all/navbar.html'%}
 
 <body>
-    {%include 'all/navbar.html'%}
-
     {% block content %}
 
     {% endblock %}
 
     {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-    <script>
-        new WOW().init();
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    {% bootstrap_javascript %}
-    {% endblock %}
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script>
+    new WOW().init();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% bootstrap_javascript %}
+{% endblock %}
 
 </html>

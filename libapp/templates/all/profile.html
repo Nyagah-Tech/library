@@ -2,20 +2,35 @@
 {%load static%}
 {%load bootstrap4%}
 {%block content%}
+<style>
+    body {
+        background-color: whitesmoke
+    }
+    .row{
+        margin-top: 5rem;
+    }
+    img{
+        border-radius: 50%;
+    }
+    .card {
+        padding: 3rem;
+        align-content: center;
+    }
+    .details {
 
+    }
+</style>
 <body>
-    <div id="banner-img" style="background-color:wheat !important;height: 300px;">
-
-    </div>
-    <div class="head" style="text-align: center;margin-bottom: 50px;">
-        <h1 class="text-center">{{profile.user.username}} profile</h1>
+   
+    <div class="head3" ;">
     </div>
     <div class="container">
-        <div class="row">
+        <div class="row" >
             <div class="col-md-8">
-                <div class="card" style="padding: 15px;">
+                <div class="card">
+                    <h1 class="text-center">{{profile.user.username}} profile</h1>
 
-                    <img src="{{profile.profile_pic.url}}" alt="No profile picture" style="height: 50%; width: 100%;">
+                    <img src="{{profile.profile_pic.url}}" alt="No profile picture"  thumbnail>
                     <div class="details">
                         <p><b>Bio :::</b> {{profile.bio}}</p>
                         <p><b>updated on</b> <i>{{profile.update_on}}</i></p>

@@ -1,60 +1,210 @@
-{%extends 'all/base.html'%}
-{%load static%}
-{%load bootstrap4%}
-{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .about {
+            background-image: url("https://torontoist.com/wp-content/uploads/2017/04/Screen-Shot-2017-04-22-at-4.44.41-PM.png");
+            padding-right: 20rem;
+            padding-left: 20rem;
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+            height: 100%;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+
+        }
+
+        #introduction {
+            padding-left: 10rem;
+            padding-right: 10rem;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+            background-image: url("https://www.profit2.com/wp-content/uploads/2018/08/Grey-Gradient-Background.jpg");
+            background-size: cover;
+
+        }
+
+        h1 {
+            font-family: 'Abril Fatface', cursive;
+        }
+
+        .col-md-4 {
+            padding-top: 1rem;
+        }
+
+        h3 {
+            font-family: 'Abril Fatface', cursive;
+        }
+
+        .research {
+            background-image: url("http://wtgrantfoundation.org/library/uploads/2016/05/research-use-in-policy.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            padding-top: 4rem;
+            padding-bottom: 3rem;
+        }
+
+        .science {
+            background-image: url("https://million-wallpapers.com/wallpapers/1/62/14225728574730010526/gray-background-dna-dnk-medical-wallpaper-genes.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            padding-top: 4rem;
+            padding-bottom: 3rem;
+        }
+
+        .fiction {
+            padding-top: 4rem;
+            padding-bottom: 3rem;
+        }
+
+        .thriller {
+            padding-top: 4rem;
+            padding-bottom: 3rem;
+        }
+
+        .cardBook {
+            cursor: pointer;
+            transition-duration: .3s;
+            transition-property: transform;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            transform: translateZ(0);
+            box-shadow: 0 2px 4px black;
+            transition: box-shadow .3s ease-in-out;
+        }
+
+        .cardBook:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px black;
+        }
+    </style>
+
+</head>
+{%include 'all/navbar.html'%}
 
 <body>
+    <div class="about">
+        <div class="card" id="introduction">
+            <h1 class="text-center">About Us</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nobis corporis exercitationem earum
+                optio cumque numquam aliquam eaque in. Cum molestias architecto pariatur deserunt tenetur necessitatibus
+                dolor maxime doloremque consequuntur.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit facilis voluptatem consequuntur, in
+                cumque reprehenderit, veritatis harum corrupti illo eligendi amet. Hic deserunt aperiam optio architecto
+                non aut fugit quis.</p>
+        </div>
+    </div>
 
-    <div id="home">
-        <img src="/static/paro" id="banner-img" alt="">
+    <div class="fiction">
         <div class="container">
-            <h1 class="text-center" style="font-size: 55px;">Category of books</h1>
-            <div class="row" id="card-row">
-                <div class="col-md-3" id="col">
-                    <a href="/books/category/1" style="text-decoration: none;">
-                        <div class="card wow fadeInUp" id="category-card">
-                            <div class="card-body">
-
-                                <h3 id="">Fiction</h3>
-
-                            </div>
-                        </div>
-                    </a>
+            <div class="line" style="width:70px; height:5px; background-color:grey;margin-top: 20px;"></div>
+            <div class="row" style="margin-bottom: 30px;">
+                <div class="col-md-3">
+                    <h2><a href="/books/category/1"><b style="color: black;">Fiction</b></a></h2>
                 </div>
-                <div class="col-md-3" id="col">
-                    <a href="/books/category/4" style="text-decoration: none;">
-                        <div class="card wow slideInLeft" id="category-card">
-                            <div class="card-body">
-
-                                <h3 id="">Research</h3>
-
-                            </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        {%include 'all/small-nav.html' %}
+                        <div class="col-md-4">
+                            <div class="card cardBook" style="height:250px;"></div>
                         </div>
-                    </a>
-                </div><div class="col-md-3" id="col">
-                    <a href="/books/category/3" style="text-decoration: none;">
-                        <div class="card wow fadeInDown" id="category-card">
-                            <div class="card-body">
-
-                                <h3 id="">Thriller</h3>
-
-                            </div>
+                        <div class="col-md-4">
+                            <div class="card cardBook" style="height:250px;"></div>
                         </div>
-                    </a>
-                </div><div class="col-md-3" id="col">
-                    <a href="/books/category/5" style="text-decoration: none;">
-                        <div class="card wow slideInRight" id="category-card">
-                            <div class="card-body">
-
-                                <h3 id="">Science</h3>
-
-                            </div>
+                        <div class="col-md-4">
+                            <div class="card cardBook" style="height:250px;"></div>
                         </div>
-                    </a>
+                    </div>
+                    <h3 class="text-center" style="margin-top: 15px;">See more ...</h3>
                 </div>
             </div>
 
         </div>
     </div>
+    <div class="research">
+        <div class="container" id="research">
+            <div class="line" style="width:70px; height:5px; background-color:grey;margin-top: 20px;"></div>
+            <div class="row" style="margin-bottom: 30px;">
+                <div class="col-md-3">
+                    <h2><a href="/books/category/4"><b style="color: black;">Research</b></a></h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        {%include 'all/resnav.html' %}
+                        {%for book in research%}
+                        <div class="col-md-4">
+                            <div class="card cardBook" style="height:250px;">
+                                <img src="{{book.pic.url}}" alt="" style="height: 250px;">
+                            </div>
+                        </div>
+                        {%endfor%}
+
+                    </div>
+                    <h3 class="text-center" style="margin-top: 15px">See more ...</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="thriller">
+        <div class="container">
+            <div class="line" style="width:70px; height:5px; background-color:grey;margin-top: 20px;"></div>
+            <div class="row" style="margin-bottom: 30px;">
+                <div class="col-md-3">
+                    <h2><a href="/books/category/3"><b style="color: black;">Thriller</b></a></h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        {%include 'all/thinav.html' %}
+                        {%for book in thriller %}
+                        <div class="col-md-4">
+                            <div class="card cardBook" style="height:250px;">
+                                <img src="{{ book.pic.url}}" alt="" style="height: 250px;">
+                            </div>
+                        </div>
+                        {%endfor%}
+
+                    </div>
+                    <h3 class="text-center" style="margin-top: 15px">See more ...</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="science">
+        <div class="container">
+            <div class="line" style="width:70px; height:5px; background-color:grey;margin-top: 20px;"></div>
+            <div class="row" style="margin-bottom: 30px;">
+                <div class="col-md-3">
+                    <h2><a href="/books/category/5"><b style="color: black;">Science</b></a></h2>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        {%include 'all/sciencenav.html' %}
+                        {%for book in science%}
+                        <div class="col-md-4">
+                            <div class="card cardBook" style="height:250px;">
+                                <img src="{{book.pic.url}}" alt="" style="height:250px;">
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                    <h3 class="text-center" style="margin-top: 15px">See more ...</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </body>
-{%endblock%}
+
+</html>

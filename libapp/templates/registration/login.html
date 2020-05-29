@@ -1,53 +1,120 @@
 {%extends "registration/base.html"%}
 {% load bootstrap4 %}
 {% block content %}
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-</head>
-<body style="background-color:black;color: white;" >
-  <h3 class="text-center" style="margin-top: 50px;font-size:30px;">Sign In</h3>
-  <div class="container">
-    <div class="card"style="margin-top: 50px;height:450px">
 
-      <div class="row" >
-        <!-- Empty div -->
-        <div class="col-md-4"></div>
-        <div class="col-md-4" style="margin-top: 30px">
-          {% if form.errors %}
-            <p> Password or Username is incorrect </p>
-          {% endif %}
-          <div class="panel panel-default">
-    
-            <div class="panel-heading">
-             
-            </div>
-            <div class="panel-body">
-    
-              <form  action="/accounts/login/" method="post">
-                {% csrf_token %}
-                {% bootstrap_form form%}
-    
-                <div class="form-group">
-                  <input type="submit" class="btn btn-primary btn-sm" value="Login">
-                </div>
-    
-                <input type="hidden" name="next" value="{{next}}">
-    
-              </form>
-    
-            </div>
-    
-          </div>
-          <p>Don't have an account?  <a href="/register/" class="btn btn-sucess">Register</a></p>
-    
-        </div>
-        <!-- empty div -->
-        <div class="col-md-4">
-            
-        </div>
-      </div>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <style>
+    /* Pen-specific styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body,
+    section,
+    div {
+      height: 100%;
+    }
+
+    body {
+      color: #fff;
+      font-family: sans-serif;
+      font-size: 1rem;
+      line-height: 100%;
+      text-align: center;
+      
+    }
+
+    section {
+      width: 100%;
+    }
+
+    article {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      padding: 10rem;
+      text-align: center;
+      transform: translate(-50%, -50%);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      margin: 0 0 0.75rem 0;
+      font-family: 'Abril Fatface', cursive;
+      
+      
+    }
+
+    /* Pattern styles */
+    .left-half {
+      background-image: url("https://www.adazing.com/wp-content/uploads/2013/02/5.jpg");
+      float: left;
+      width: 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .right-half {
+      background-image: linear-gradient( 90.1deg,  rgba(23,20,20,1) 10%, rgba(247,118,0,1) 84.8% );
+      float: left;
+      width: 50%;
+    }
+    .card{
+      padding: 3rem;
+      color: black;
+      
+    }
+    .register{
+      font-family: 'Abril Fatface', cursive;
+    }
+    .btn{
+      /* background-image: linear-gradient( 90.1deg,  rgba(23,20,20,1) 10%, rgba(247,118,0,1) 84.8% ); */
+      background-color: chocolate;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <div class="left-half">
+
     </div>
-  </div>
+    <div class="right-half">
+      <article>
+        
+        <div class="card">
+          <h1 class="text-center">Login </h1>
+          <div class="error">
+            {%if form.errors %}
+            <p>Incorrect password or username</p>
+            {% endif %}
+          </div>
+          <form action="/accounts/login/" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="text" name="username" placeholder="Username" autofocus required class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" placeholder="Password" required class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn " value="Login">
+            </div>
+            <input type="hidden" name="next" value="{{ next }}">
+          </form>
+          <div class="register">
+            <p>Forgot your password?</p>
+            <p>Don't have have an account?   <a href="/register/" class="btn ">Register</a></p>
+          </div>
+        </div>
+
+      </article>
+    </div>
+  </section>
 </body>
 
 {% endblock %}

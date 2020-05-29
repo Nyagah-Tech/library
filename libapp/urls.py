@@ -13,6 +13,10 @@ urlpatterns = [
     path('profile/',views.profile_view,name='profile'),
     path('view/notify/',views.user_communicate,name="communicate"),
     path('pay/penalty/',views.pay_penalty,name="pay_penalty"),
+    # ---------------
+    path('library/card/',views.get_library_card,name='library-card'),
+    path('search-book-by-name/',views.search_book_by_name_normal,name = 'search-book'),
+    path('library-card/renew/',views.renew_library_card,name = 'renew-card'),
 
     #dashboard
     path('dashboard/',views.dashboard,name="user_dashboard"),
@@ -34,7 +38,8 @@ urlpatterns = [
     path('payment-done/', views.payment_done, name='payment-done'),
     path('payment-cancelled/', views.payment_canceled, name='payment-cancelled'),
     path('q-forex-binary-f-k-defw-dshsgdtdhvdsss-scczzc-url/',include('paypal.standard.ipn.urls')),
-    path("penalty-payment/",views.penalty_payment,name="penalty_payment")
+    path("penalty-payment/",views.penalty_payment,name="penalty_payment"),
+    
     
     
 ]

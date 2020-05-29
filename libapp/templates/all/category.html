@@ -1,124 +1,248 @@
 {%extends 'all/base.html'%}
-{%load bootstrap4%}
 {%load static%}
 {%block content%}
+<link href="https://fonts.googleapis.com/css2?family=Piedra&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Piedra&display=swap" rel="stylesheet">
+<style>
+    .main {
+        height: 80vh;
+        background-image: url('https://www.scholastic.com/content/dam/teachers/lesson-plans/2016-2017/ingredients-mystery-lesson-plan-4-3.jpg');
+        -webkit-clip-path: polygon(0 0, 0% 0, 100% 57%, 0% 90%);
+        clip-path: polygon(0 0, 100% 0, 100% 57%, 0% 90%);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        justify-content: center;
+        text-align: center;
+        padding-top: 8rem;
 
 
-<body style="margin-bottom: 100px;" >
-    <div id="banner-img" style="background-color: black !important;height: 300px;">
-        
+
+    }
+
+    .fic {
+        font-size: 18rem;
+        font-family: 'Piedra', cursive;
+        color: rgba(236, 178, 18, 0.979);
+
+    }
+
+    .description {
+        text-align: center;
+        padding: 2rem
+    }
+
+    .row {
+        padding: 6rem;
+        background-color: #b8c6db;
+        background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 74%);
+        -webkit-clip-path: polygon(0 100%, 100% 100%, 100% 0%, 0% 20%);
+        clip-path: polygon(0 100%, 100% 100%, 100% 0%, 0% 20%);
+        background-attachment: fixed;
+    }
+
+    .card {
+        padding: 0;
+        cursor: pointer;
+        background-color: transparent;
+        color: white;
+        transition-duration: .3s;
+        transition-property: transform;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        transform: translateZ(0);
+        box-shadow: 0 2px 4px black;
+        transition: box-shadow .3s ease-in-out;
+
+    }
+
+    .card:hover {
+        transform: scale(1.1);
+        box-shadow: 0 10px 25px black;
+    }
+
+    
+
+    .details {
+        padding-top: 1rem;
+        font-family: 'Fjalla One', sans-serif;
+        font-size: 30px;
+        color: white;
+        background-color: black;
+
+
+    }
+
+    .col-md-4 {
+        padding: 2rem;
+    }
+
+    .button {
+        display: inline-flex;
+        height: 40px;
+
+        border: 2px solid #BFC0C0;
+        margin: 0 auto;
+        color: #BFC0C0;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-size: .8em;
+        letter-spacing: 1.5px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        width: 50%;
+
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+
+    .button-5 {
+
+        position: relative;
+
+        overflow: hidden;
+
+        cursor: pointer;
+
+        transition: all .5s ease-Out;
+
+    }
+
+    .button-5 a {
+
+        position: relative;
+
+        transition: all .45s ease-Out;
+        /* Helps in making the object fade away */
+
+    }
+
+    /* object that coming on top of the words its a div */
+
+    .translate {
+
+        transform: rotate(50deg);
+
+        width: 100%;
+
+        height: 250%;
+
+        left: -200px;
+
+        top: -30px;
+
+        background: white;
+
+        position: absolute;
+
+        transition: all .5s ease-Out;
+
+    }
+
+    .button-5:hover {
+
+        background-color: whitesmoke;
+        color: black;
+
+        transform: translateY(-7px);
+        /* its like padding bottom */
+
+        transition: all .8s ease-Out;
+
+    }
+
+    .button-5:hover #translate {
+
+        left: 0;
+
+    }
+
+    .button-5:hover a {
+
+        color: black;
+
+    }
+
+    #button {
+        margin: 0 auto;
+        padding-left: 8rem;
+        font-size: 20px !important;
+
+    }
+</style>
+
+<body>
+    <div class="main">
+        <h1 class="fic">{{category.name}}</h1>
     </div>
-    <div class="head" style="text-align: center;margin-bottom: 50px;">
-        <h1>{{category.name}} books</h1>
+
+    <div class="container">
+        <div class="description">
+            {%if category.name == 'Fiction' %}
+            <p>
+                These are books that suggest a story that is without basis in reality. Fiction suggests a story invented
+                and
+                fashioned either to entertain or to deceive: clever fiction; pure fiction. Fabrication applies
+                particularly to
+                a false but carefully invented statement or series of statements, in which some truth is sometimes
+                interwoven.
+            </p>
+            {%elif category.name == 'Science' %}
+            <p>
+                Usually these books are written for a wide audience presumed to have a general education rather than a
+                specifically scientific training, as opposed to the very narrow audience that a scientific paper would
+                have,
+                and are therefore referred to as popular science.
+            </p>
+            {%elif category.name == 'Research'%}
+            <p>
+                These are books written in order to prove or disprove a hypothesis, answer a specific question,
+                investigation or experimentation aimed at the discovery and
+                interpretation of facts, revision of accepted theories or laws in the light of new facts, or practical
+                application of such new or revised theories or laws.
+            </p>
+            {%elif category.name == 'Thriller'%}
+            <p>
+                Thriller novels have villains, suspense, and action in settings such as espionage, medicine, crime,
+                politics, and high tech.
+                They often involve life and death situations and have high stakes, like the control of the world or the
+                possibility of widespread death or destruction.
+                Many times innocent people are victimized, stalked, or caught in situations that are beyond their
+                control.
+                Characters have to overcome obstacles, either alone or with a small group of people, and stop some
+                catastrophe from happening.
+                Thrillers usually have a happy ending.
+            </p>
+            {%endif%}
+        </div>
     </div>
-    <div class="container" >
-        
-        <div class="row">
-            {% for book in books %}
-            <div class="col-md-4">
-                <div class="card" style="padding: 10px;">
-                    <h2 class="text-center">{{book.name}}</h2>
-                    
-                    <img src="{{book.pic.url}}" alt="" style="width: 100%;height: 100%;">
-                    <div class="details" style="margin-top: 20px;">
-                        <p class="text-center"><b >{{book.name}} overview</b></p>
-                        <p >{{book.description}}</p>
-                        <div class="row" style="margin-top: 30px;">
-                            <div class="col-md-6">
-                                <a href="/view/book/{{book.id}}" class="btn " style="background-color: black;color: white;">Get book</a>
 
-                            </div>
-                            <div class="col-md-6">
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4">
+            <div class="card">
+                <!-- <h2 class="text-center">{{book.name}}</h2> -->
 
-                                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLong" style="background-color: black;color: white;">
-                                    Rate
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Button trigger modal -->
+                <img src="{{book.pic.url}}" alt="" height="350px">
+                <div class="details">
+                    <p class="text-center" style="margin-bottom: 3rem;"><b>{{book.name}}</b></p>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="background-color: black;color:white">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title " id="exampleModalLongTitle" style="color: black; padding-left: 30%;font-size: 35px;">Rate this book</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- bodyy -->
-                                    <form action="/rate/book/{{book.id}}" method="POST">
-                                        {%csrf_token%}
-                                        <select name="content">
-                                            <option name="">Content</option>
-                                            <option name="" value="0">0</option>
-                                            <option name="" value="1">1</option>
-                                            <option name="" value="2">2</option>
-                                            <option name="" value="3">3</option>
-                                            <option name="" value="4">4</option>
-                                            <option name="" value="5">5</option>
-                                            <option name="" value="6">6</option>
-                                            <option name="" value="7">7</option>
-                                            <option name="" value="8">8</option>
-                                            <option name="" value="9">9</option>
-                        
-                                        </select>
-                                        <select  name="physical_appearance">
-                                            <option name="">Physical</option>
-                                            <option name="" value="0">0</option>
-                                            <option name="" value="1">1</option>
-                                            <option name="" value="2">2</option>
-                                            <option name="" value="3">3</option>
-                                            <option name="" value="4">4</option>
-                                            <option name="" value="5">5</option>
-                                            <option name="" value="6">6</option>
-                                            <option name="" value="7">7</option>
-                                            <option name="" value="8">8</option>
-                                            <option name="" value="9">9</option>
-                        
-                                        </select >
-                                        <select name="theme">
-                                            <option name="">Theme</option>
-                                            <option name="" value="0">0</option>
-                                            <option name="" value="1">1</option>
-                                            <option name="" value="2">2</option>
-                                            <option name="" value="3">3</option>
-                                            <option name="" value="4">4</option>
-                                            <option name="" value="5">5</option>
-                                            <option name="" value="6">6</option>
-                                            <option name="" value="7">7</option>
-                                            <option name="" value="8">8</option>
-                                            <option name="" value="9">9</option>
-                        
-                                        </select>
-                        
-                                        <input type="submit" value="Rate" style="margin-left: 10%;background-color: black;color: white;">
-                                        <div class="message">
-                                            {% for message in messages%}
-                                                <h3 class="alert-danger">{{message}}</h3>
-                                            {% endfor %}
-                                        </div>
-                                    </form>
+                    <div id="button">
 
-
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/view/book/{{book.id}}" class="button button-5 "
+                            style="width: 50%;color: turquoise;">Get
+                            book</a>
                     </div>
 
                 </div>
+
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 </body>
 {% endblock %}

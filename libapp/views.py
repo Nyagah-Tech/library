@@ -10,6 +10,8 @@ from django.conf import settings
 import random
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import json,JsonResponse
+from .models import *
+import random
 
 
 # Create your views here.
@@ -47,8 +49,21 @@ def home(request):
         if user.notification :
             return redirect('penalty',id=user.book_id_id)
     categories = Category.objects.all()
+    fiction = get_object_or_404(Category,name = 'Fiction')
+    science = get_object_or_404(Category,name = 'Science')
+    thriller = get_object_or_404(Category,name = 'Thriller')
+    research =  get_object_or_404(Category,name = 'Research')
+    scienceBooks = Books.objects.filter(category = science.id )
+    thrillerBooks = Books.objects.filter(category = thriller.id)
+    researchBooks = Books.objects.filter(category = research.id)
+    fictionBooks = Books.objects.filter(category = fiction.id)
+    
     context = {
         'categories':categories,
+        'science':scienceBooks,
+        'thriller':thrillerBooks,
+        'research':researchBooks,
+        'fiction':fictionBooks,
     }  
     return render(request,'all/home.html',context)
 @login_required()
@@ -65,6 +80,7 @@ def penalty(request,id):
 
 @login_required()
 def borrow_view(request,book_id):
+    categories = Category.objects.all()
     if request.method == 'POST':
         book = get_object_or_404(Books,id = book_id)
         form = borrowform(request.POST)
@@ -107,6 +123,7 @@ def borrow_view(request,book_id):
         content=[]
         theme=[]
         physical=[]
+        
         if rates:
             for rate in rates:
                 content.append(rate.content)
@@ -117,6 +134,7 @@ def borrow_view(request,book_id):
             theme_rate = round(sum(theme)/total * 100,2)
             physical_rate = round(sum(physical)/total *100)
             context = {
+                'categories':categories,
                 'book':book,
                 'form':form,
                 'comment_form':comment_form,
@@ -131,6 +149,7 @@ def borrow_view(request,book_id):
             physical_rate = 0
             content_rate = 0 
             context = {
+                'categories':categories,
                 'book':book,
                 'form':form,
                 'comment_form':comment_form,
@@ -150,8 +169,10 @@ def logout_view(request):
 def category_view(request,id):
     books = Books.objects.filter(category = id)
     category = Category.objects.get(id = id)
+    categories = Category.objects.all()
     
     context = {
+        'categories':categories,
         'books':books,
         'category':category,
     }
@@ -188,15 +209,25 @@ def process_payment(request):
     
 @csrf_exempt
 def payment_done(request):
+    categories = Category.objects.all()
     
-    args={'post':request.POST,'get':request.GET}
+    args={
+        'post':request.POST,
+        'get':request.GET,
+        'categories':categories
+    }
         
     return render(request, 'paypal/payment_done.html',args)
  
  
 @csrf_exempt
 def payment_canceled(request):
-    args={'post':request.POST,'get':request.GET}
+    categories = Category.objects.all()
+    args={
+        'post':request.POST,
+        'get':request.GET,
+        'categories':categories
+        }
     return render(request, 'paypal/payment_cancelled.html',args)
 
 #ADMIN DASHBOARD
@@ -336,12 +367,12 @@ def delete_book(request,book_id):
 @permission_required("True","home")
 def search_book_by_name(request):
     if request.method == 'POST':
-        search_term = request.POsT['searchterm']
+        search_term = request.POST['searchterm']
         if search_term is None:
             messages.info(request,"please fill in the search input field")
             return redirect('all_books')
         else:
-            books = Books.objects.filter(name = name)
+            books = Books.objects.filter(name = search_term)
             context={
                 "books":books,
             }
@@ -363,6 +394,7 @@ def get_all_categories(request):
 @login_required()
 def comment_view(request,id):
     book = Books.objects.get(id = id)
+    
     if request.method =='POST':
         form = commentform(request.POST)
         if form.is_valid():
@@ -403,6 +435,7 @@ def rate_view(request,id):
 
 @login_required()
 def profile_view(request):
+    categories = Category.objects.all()
     if request.method == 'POST':
         form = UpdateProfileForm(request.POST,request.FILES,instance=request.user.profile)
         form1 = UserUpdateform(request.POST,instance=request.user)
@@ -416,6 +449,7 @@ def profile_view(request):
         form = UpdateProfileForm(instance=request.user.profile)
         form1 = UserUpdateform(instance=request.user)
         context ={
+            'categories':categories,
             'profile':profile,
             'borrowed_books':borrowed_books,
             'profile_form':form,
@@ -453,6 +487,7 @@ def pay_penalty(request):
 @login_required()
 def penalty_payment(request):
     item = request.session.get('order')
+    categories = Category.objects.all()
     
     if item["total_fee"] != 0:
         paypal_dict = {
@@ -469,7 +504,7 @@ def penalty_payment(request):
         
     
         form = PayPalPaymentsForm(initial=paypal_dict)
-        return render(request,'paypal/process_payment.html',{"item":item,"form":form})
+        return render(request,'paypal/process_payment.html',{"item":item,"form":form,'categories':categories})
     else:
         messages.info(request,'you should input the number of books you need!')
         return redirect('home')
@@ -482,3 +517,68 @@ def penalty_done(request):
             user.notification = False
             user.save()
             return redirect('home')
+
+@login_required()
+def get_library_card(request):
+    user = Library_card.objects.filter(user = request.user.id)
+    categories = Category.objects.all()
+    if user is None:
+        messages.info(request,'You already have a library card')
+        return redirect('home')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email == request.user.email:
+            cardId = random.randint(000000,999999)
+            user_card = Library_card(
+                user = request.user,
+                card_id = cardId,
+                name = request.user.username
+                )
+            user_card.save()
+            # should redirect to download page
+            messages.info(request,'Thank You for applying your library card. You card come for your library card tommorow.')
+            return redirect('home')
+        else:
+            messages.info(request,'Your email does not match the email you have inputted! ')
+            return redirect('home')
+    else:
+        messages.info(request,'Invalid endpoint!')
+        return redirect('home')
+
+@login_required()
+def search_book_by_name_normal(request):
+    if request.method == 'POST':
+        search_term = request.POST.get('search')
+        Book = Books.objects.filter(name = search_term)
+        
+        return redirect('borrow',book_id = book.id)
+    else:
+        return redirect('home')
+
+@login_required()
+def renew_library_card(request):
+    confirmUser = Library_card.objects.filter(user = request.user.id)
+    if confirmUser and confirmUser.renew_card == True :
+        renewFee = request.POST.get('fee')
+        if renewFee != 0 :
+            paypal_dict = {
+                'business':settings.PAYPAL_RECEIVER_EMAIL,
+                'amount':renewFee,
+                'item_name':'library card renewal',
+                'invoice':str(random.randint(0000,9999)),
+                'currency_code':'USD',
+                'notify_url': 'https://librarydan.herokuapp.com/q-forex-binary-f-k-defw-dshsgdtdhvdsss-scczzc-url/',
+                'return_url':"https://librarydan.herokuapp.com/payment-done/",
+                'cancel_return': "https://librarydan.herokuapp.com/payment-cancelled/",
+            }
+            form = PayPalPaymentsForm(initial = paypal_dict)
+            return render(request,'paypal/process_payment.html',{"form":form})
+        else:
+            messages.info(request,'Please choose a renewal card package')
+            # redirect where the form is 
+            return redirect('/')
+    else:
+        message.info(request,'Your card has not yet expired')
+        # redirect where the form is 
+        return redirect('/')
+

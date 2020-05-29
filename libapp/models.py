@@ -90,3 +90,11 @@ class User_notification(models.Model):
     posted_by = models.ForeignKey(User,on_delete = models.CASCADE)
     notification = HTMLField()
     posted_on = models.DateTimeField(auto_now_add=True)
+
+class Library_card(models.Model):
+    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    card_id = models.IntegerField()
+    name = models.CharField(max_length = 200)
+    pick_date = models.DateTimeField(auto_now_add = True)
+    expire_date = models.DateTimeField(default = '1111-1-11')
+    renew_card = models.BooleanField(default = False)

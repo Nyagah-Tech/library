@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+body {
+}
+/* Navbar Settings*/
+nav {
+  background-color: black;
+  height: 60px;
+  width: 100%;
+}
+lable.logo {
+  color: white;
+  font-size: 28px;
+  line-height: 60px;
+  padding: 0 100px;
+  font-weight: bold;
+  font-family: "Quicksand", sans-serif;
+}
+nav ul {
+  list-style: none;
+  margin-right: 100px;
+  float: right;
+  padding-top: 21.5px;
+}
+nav ul li {
+  font-family: "Quicksand", sans-serif;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 0px;
+  justify-content: center;
+}
+nav ul li a {
+  color: white;
+  font-size: 14px;
+  text-transform: uppercase;
+  padding: 21px 15px 20px 15px;
+}
+a.active,
+a:hover {
+  background: #ccb025;
+  transition: 0.5s;
+}
+
+/* DropMenu Settings */
+.dropDown {
+  display: inline-block;
+  position: relative;
+}
+.dropDown:hover .dropDown-content {
+  display: inline;
+}
+.dropDown-content {
+  display: none;
+  background-color: #ffde2f;
+  position: absolute;
+  top: 38px;
+  left: 0px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.175);
+}
+.dropDown-content li a {
+  color: black;
+  display: block;
+}
+
+.dropDown-content li {
+  line-height: 20px;
+}
+/* Header Settings*/
+
+
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg " >
+    <a class="navbar-brand" href="/books/category/1"style="color: white;">Fiction-books</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+       
+       
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+</body>
+</html>
